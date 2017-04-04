@@ -212,8 +212,9 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
 
      if (this.dateSetter) {
       this.dateSetter.subscribe((e: any) => {
-        const dateM = Moment(e);
-        this.selectDate(null, dateM);
+        this.currentDate = Moment(e);
+        this.generateCalendar();
+        this.selectDate(null, this.currentDate);
       });
      }
     
