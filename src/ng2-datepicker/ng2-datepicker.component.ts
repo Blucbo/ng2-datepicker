@@ -106,7 +106,7 @@ export const CALENDAR_VALUE_ACCESSOR: any = {
 export class DatePickerComponent implements ControlValueAccessor, OnInit {
   @Input() options: DatePickerOptions;
 
-  @Input() dateSetter: EventEmitter<{  data: string  }>;
+  @Input() dateSetter: EventEmitter<string>;
   
   @Input() inputEvents: EventEmitter<{ type: string, data: string | DateModel }>;
   @Output() outputEvents: EventEmitter<{ type: string, data: string | DateModel }>;
@@ -145,6 +145,12 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
     if (!this.inputEvents) {
       return;
     }
+   
+       if (this.dateSetter) {
+      this.dateSetter.subscribe((e: any) => {
+         this.selectDate(null, Moment(e));
+      });
+     }
 
     this.inputEvents.subscribe((event: { type: string, data: string | DateModel }) => {
       if (event.type === 'setDate') {
@@ -209,13 +215,11 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
       }, false);
     }
 
-     if (this.dateSetter) {
-      this.dateSetter.subscribe((e: any) => {
-         this.currentDate = Moment(e);
-         this.selectDate(null, this.currentDate);
-     //----------------------------------------------------------
-      });
-     }
+//      if (this.dateSetter) {
+//       this.dateSetter.subscribe((e: any) => {
+//          this.selectDate(null, Moment(e));
+//       });
+//      }
     
     if (this.inputEvents) {
       this.inputEvents.subscribe((e: any) => {
